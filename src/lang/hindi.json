@@ -39,5 +39,7 @@
   "Status": "दर्जा",
   "fullName": "पूरा नाम",
   "Signup" : "साइन अप करें",
-  "rejected" : "अस्वीकार "
+  "rejected" : "अस्वीकार ",
+  "lang": "hi"
+
 }

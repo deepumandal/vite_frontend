@@ -68,20 +68,20 @@ const Dashboard = () => {
 
   const [remarkquery, setRemarkquery] = useState("");
 
-  const approvestatus = () => {
-    const id = status?._id;
+  const approvestatus = (id) => {
+    const _id = user?._id;
     axios
-      .patch(`${api}/updatestatus?_id=${id}`, { remarkStatus: "approved" })
+      .patch(`${api}/updatestatus?_id=${_id}&id=${id}`, { remarkStatus: "approved" })
       .then((res) => {
         console.log(res);
         dispatch(getstatusdataapi({ _id: user?._id }));
       })
       .catch((e) => console.error(e));
   };
-  const rejectstatus = () => {
-    const id = status?._id;
+  const rejectstatus = (id) => {
+    const _id = user?._id;
     axios
-      .patch(`${api}/updatestatus?_id=${id}`, {
+      .patch(`${api}/updatestatus?_id=${_id}&id=${id}`, {
         remarkStatus: "rejected",
         remarkMassage: remarkquery,
       })
@@ -227,38 +227,50 @@ const Dashboard = () => {
                     )}
                   </Tr>
                 </Thead>
-                <Tbody>
-                  <Tr>
-                    <Td>
-                      {status?._id.trim().split("").slice(0, 5).join("") || 0}
-                    </Td>
-                    <Td> {status?.firstname + "  " + status?.lastname} </Td>
-                    <Td isNumeric>{status?.address}</Td>
-                    <Td>{status?.email}</Td>
-                    <Td>{status?.number}</Td>
-                    <Td> {t(`${status?.remarkStatus}`)} </Td>
-                    {role && (
-                      <>
-                        <Td>
-                          {" "}
-                          <Button onClick={() => approvestatus()}>
-                            {t('approve')}
-                          </Button>{" "}
-                        </Td>
-                        <Td>
-                          {" "}
-                          <Reject
-                            setRemarkquery={setRemarkquery}
-                            rejectstatus={rejectstatus}
-                          >
+                {typeof status != "string" &&
+                  status.map((item) => {
+                    return (
+                      <Tbody key={item._id}>
+                        <Tr>
+                          <Td>
+                            {item?._id
+                              ?.trim()
+                              .split("")
+                              .slice(0, 5)
+                              .join("") || 0}
+                          </Td>
+                          <Td>
                             {" "}
-                            {t("rejected")}{" "}
-                          </Reject>
-                        </Td>
-                      </>
-                    )}
-                  </Tr>
-                </Tbody>
+                            {item?.firstname + "  " + item?.lastname}{" "}
+                          </Td>
+                          <Td isNumeric>{item?.address}</Td>
+                          <Td>{item?.email}</Td>
+                          <Td>{item?.number}</Td>
+                          <Td> {t(`${item?.remarkStatus}`)} </Td>
+                          {role && (
+                            <>
+                              <Td>
+                                {" "}
+                                <Button onClick={() => approvestatus(item._id)}>
+                                  {t("approve")}
+                                </Button>{" "}
+                              </Td>
+                              <Td>
+                                {" "}
+                                <Reject
+                                  setRemarkquery={setRemarkquery}
+                                  rejectstatus={()=>rejectstatus(item._id)}
+                                >
+                                  {" "}
+                                  {t("rejected")}{" "}
+                                </Reject>
+                              </Td>
+                            </>
+                          )}
+                        </Tr>
+                      </Tbody>
+                    );
+                  })}
               </Table>
             </TableContainer>
           </VStack>
