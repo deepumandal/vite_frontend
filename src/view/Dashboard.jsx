@@ -6,18 +6,35 @@ import {
   HStack,
   Heading,
   Input,
+  Table,
+  TableCaption,
+  TableContainer,
+  Tbody,
+  Td,
   Text,
+  Tfoot,
+  Th,
+  Thead,
+  Tr,
   VStack,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getstatusdataapi } from "../store/reducer/actions";
 import axios from "axios";
+import Reject from "../components/Reject";
 const api = `http://localhost:3000`;
 
+import { useTranslation } from "react-i18next";
+
 const Dashboard = () => {
+  const { t } = useTranslation();
+
   const { user } = useSelector((store) => store.auth.data);
-  const { status } = useSelector((store) => store.feed.status);
+
+  const role = user.role == "r1" ? true : false;
+
+  const { status } = useSelector((store) => store.feed);
   const dispatch = useDispatch();
   const [isstatus, setIsstatus] = useState(true);
   // console.log(user)
@@ -46,9 +63,37 @@ const Dashboard = () => {
     const { name } = e.target;
     setformdata({ ...formdata, [name]: e.target.files[0] });
   };
+
+  // stauts
+
+  const [remarkquery, setRemarkquery] = useState("");
+
+  const approvestatus = () => {
+    const id = status?._id;
+    axios
+      .patch(`${api}/updatestatus?_id=${id}`, { remarkStatus: "approved" })
+      .then((res) => {
+        console.log(res);
+        dispatch(getstatusdataapi({ _id: user?._id }));
+      })
+      .catch((e) => console.error(e));
+  };
+  const rejectstatus = () => {
+    const id = status?._id;
+    axios
+      .patch(`${api}/updatestatus?_id=${id}`, {
+        remarkStatus: "rejected",
+        remarkMassage: remarkquery,
+      })
+      .then((res) => {
+        console.log(res);
+        dispatch(getstatusdataapi({ _id: user?._id }));
+      })
+      .catch((e) => console.error(e));
+  };
+
   useEffect(() => {
-    
-    dispatch(getstatusdataapi({_id : user?._id}))
+    dispatch(getstatusdataapi({ _id: user?._id }));
   }, []);
 
   return (
@@ -64,8 +109,11 @@ const Dashboard = () => {
         justifyContent={"center"}
         gap={"400px"}
       >
-        <Text fontWeight={"bold"}>Hello {greet} </Text>
-        <Button  onClick={()=>dispatch(getstatusdataapi({_id : user?._id}))}>Account Status</Button>
+        <Text fontWeight={"bold"}>
+          {" "}
+          {t("Hello")} {greet}{" "}
+        </Text>
+        <Button onClick={() => setIsstatus(!isstatus)}> {t("Status")} </Button>
       </HStack>
       <VStack
         // border="1px solid red"
@@ -80,65 +128,141 @@ const Dashboard = () => {
         gap={"0.6rem"}
         maxw={"1400px"}
       >
-        <Heading>Marriage Form</Heading>
-        <FormControl display="flex" flexDir={"column"} gap={"0.5rem"}>
-          <FormLabel>Email </FormLabel>
-          <Input type="email" name="email" onChange={(e) => formchange(e)} />
-          <FormLabel> phone no </FormLabel>
-          <Input type="number" name="number" onChange={(e) => formchange(e)} />
-          <Flex
-            flexDir={{
-              base: "column",
-              md: "row",
-              lg: "row",
+        <Heading>{isstatus ? t("MP") : t("status bar")}</Heading>
+        {isstatus ? (
+          <FormControl display="flex" flexDir={"column"} gap={"0.5rem"}>
+            <FormLabel> {t("email")} </FormLabel>
+            <Input type="email" name="email" onChange={(e) => formchange(e)} />
+            <FormLabel> {t("Phone_no")} </FormLabel>
+            <Input
+              type="number"
+              name="number"
+              onChange={(e) => formchange(e)}
+            />
+            <Flex
+              flexDir={{
+                base: "column",
+                md: "row",
+                lg: "row",
+              }}
+            >
+              <VStack>
+                <FormLabel textAlign={"left"} w={"100%"}>
+                  {" "}
+                  {t("Photograph")}
+                </FormLabel>
+                <Input
+                  name="photograph"
+                  border={"none"}
+                  type="file"
+                  onChange={addfile}
+                  accept="image/png, image/jpg, image/jpeg"
+                />
+              </VStack>
+              <VStack>
+                <FormLabel textAlign={"left"} w={"100%"}>
+                  {" "}
+                  {t("addhar_card")}
+                </FormLabel>
+                <Input
+                  name="addhar"
+                  type="file"
+                  border={"none"}
+                  onChange={addfile}
+                  accept="image/png, image/jpg, image/jpeg"
+                />
+              </VStack>
+              <VStack>
+                <FormLabel textAlign={"left"} w={"100%"}>
+                  {" "}
+                  {t("signature")}
+                </FormLabel>
+                <Input
+                  name="signature"
+                  type="file"
+                  border={"none"}
+                  onChange={addfile}
+                  accept="image/png, image/jpg, image/jpeg"
+                />
+              </VStack>
+            </Flex>
+            <FormLabel> {t("date_of_submission")} </FormLabel>
+            <Input type="date" name="dos" onChange={(e) => formchange(e)} />
+            <Button onClick={submitformdata} type="submit">
+              {t("submit")}
+            </Button>
+          </FormControl>
+        ) : (
+          <VStack
+            minW={{
+              base: "100%",
+              md: "1000px",
+              lg: "900px",
             }}
+            maxw={"1400px"}
+            padding={"1rem 0%"}
+            // border={"1px solid red"}
           >
-            <VStack>
-              <FormLabel textAlign={"left"} w={"100%"}>
-                {" "}
-                Photograph{" "}
-              </FormLabel>
-              <Input
-                name="photograph"
-                border={"none"}
-                type="file"
-                onChange={addfile}
-                accept="image/png, image/jpg, image/jpeg"
-              />
-            </VStack>
-            <VStack>
-              <FormLabel textAlign={"left"} w={"100%"}>
-                {" "}
-                Addhar card{" "}
-              </FormLabel>
-              <Input
-                name="addhar"
-                type="file"
-                border={"none"}
-                onChange={addfile}
-                accept="image/png, image/jpg, image/jpeg"
-              />
-            </VStack>
-            <VStack>
-              <FormLabel textAlign={"left"} w={"100%"}>
-                {" "}
-                signature{" "}
-              </FormLabel>
-              <Input
-                name="signature"
-                type="file"
-                border={"none"}
-                onChange={addfile}
-                accept="image/png, image/jpg, image/jpeg"
-              />
-            </VStack>
-          </Flex>
-          <FormLabel> Date of submission </FormLabel>
-          <Input type="date" name="dos" onChange={(e) => formchange(e)} />
-          <Button onClick={submitformdata} type="submit">
-            Submit
-          </Button>
-        </FormControl>
+            <Button
+              onClick={() => dispatch(getstatusdataapi({ _id: user?._id }))}
+            >
+              {" "}
+              {t("refresh")}{" "}
+            </Button>
+            <TableContainer w={"100%"}>
+              <Table variant="striped" colorScheme="teal">
+                <Thead>
+                  <Tr>
+                    <Th> {t("id")} </Th>
+                    <Th> {t("fullName")} </Th>
+                    <Th> {t("address")} </Th>
+                    <Th> {t("email")} </Th>
+                    <Th isNumeric> {t("Phone_no")} </Th>
+                    <Th> {t("Status")} </Th>
+                    {role && (
+                      <>
+                        <Th>{t("approve")} </Th>
+                        <Th> {t("reject")} </Th>
+                      </>
+                    )}
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  <Tr>
+                    <Td>
+                      {status?._id.trim().split("").slice(0, 5).join("") || 0}
+                    </Td>
+                    <Td> {status?.firstname + "  " + status?.lastname} </Td>
+                    <Td isNumeric>{status?.address}</Td>
+                    <Td>{status?.email}</Td>
+                    <Td>{status?.number}</Td>
+                    <Td> {t(`${status?.remarkStatus}`)} </Td>
+                    {role && (
+                      <>
+                        <Td>
+                          {" "}
+                          <Button onClick={() => approvestatus()}>
+                            {t('approve')}
+                          </Button>{" "}
+                        </Td>
+                        <Td>
+                          {" "}
+                          <Reject
+                            setRemarkquery={setRemarkquery}
+                            rejectstatus={rejectstatus}
+                          >
+                            {" "}
+                            {t("rejected")}{" "}
+                          </Reject>
+                        </Td>
+                      </>
+                    )}
+                  </Tr>
+                </Tbody>
+              </Table>
+            </TableContainer>
+          </VStack>
+        )}
       </VStack>
     </VStack>
   );

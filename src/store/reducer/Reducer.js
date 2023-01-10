@@ -4,7 +4,7 @@ import {GET_STATUS_ERROR, GET_STATUS_LOADING, GET_STATUS_SUCCESS} from "../Allac
 const initialState = {
     loading: false,
     error: false,
-    status: []
+    status: {}
 }
 
 export const Reducer = (state = initialState, { type, payload }) => {

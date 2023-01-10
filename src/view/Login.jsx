@@ -15,8 +15,10 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { getloginapi, getresisterapi } from "../store/auth/actions";
 import { useNavigate } from "react-router-dom";
-
+import { useTranslation } from "react-i18next";
 const Login = () => {
+  const { t } = useTranslation();
+
   const [PgType, setPgType] = useState(true);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -57,7 +59,7 @@ const Login = () => {
     <Box>
       <VStack>
         <Text textAlign={"center"} fontWeight="bold">
-          {PgType ? "Login" : "Signup"}
+          {PgType ? t("Login") : t("Signup")}
         </Text>
         {PgType ? (
           <FormControl
@@ -74,7 +76,7 @@ const Login = () => {
           >
             <Input
               type="email"
-              placeholder="Enter email"
+              placeholder={t("enter_email")}
               name="email"
               onChange={(e) => loginchange(e)}
             />
@@ -84,14 +86,16 @@ const Login = () => {
                 name="password"
                 onChange={(e) => loginchange(e)}
                 type={show ? "text" : "password"}
-                placeholder="Enter Password"
+                placeholder={t("enter_password")}
               />{" "}
               <InputRightElement width="4.5rem">
-                <Button onClick={handleClick}>{show ? "Hide" : "Show"}</Button>
+                <Button onClick={handleClick}>
+                  {show ? t("hide") : t("show")}
+                </Button>
               </InputRightElement>
             </InputGroup>
             <Button type="submit" onClick={loginSubmit}>
-              submit
+              {t('submit')}
             </Button>
           </FormControl>
         ) : (
@@ -110,45 +114,49 @@ const Login = () => {
             <HStack>
               <Input
                 type="text"
-                placeholder="FirstName"
+                placeholder={t("firstname")}
                 name="firstname"
                 onChange={(e) => resisterchange(e)}
               />
               <Input
                 type="text"
-                placeholder="LastName"
+                placeholder={t("lastname")}
                 name="lastname"
                 onChange={(e) => resisterchange(e)}
               />
             </HStack>
             <Input
               type="text"
-              placeholder="Address"
+              placeholder={t("address")}
               name="address"
               onChange={(e) => resisterchange(e)}
             />
 
             <Input
               type="email"
-              placeholder="Email"
+              placeholder={t("enter_email")}
               name="email"
               onChange={(e) => resisterchange(e)}
             />
             <HStack>
-            <Input
-              type="date"
-              placeholder="age"
-              name="dob"
-              onChange={(e) => resisterchange(e)}
-            />
-            <Select placeholder="gender" name="gender" onChange={resisterchange}>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-            </Select>
+              <Input
+                type="date"
+                placeholder={t("age")}
+                name="dob"
+                onChange={(e) => resisterchange(e)}
+              />
+              <Select
+                placeholder={t("gender")}
+                name="gender"
+                onChange={resisterchange}
+              >
+                <option value="male">{t('Male')}</option>
+                <option value="female">  {t('Female')} </option>
+              </Select>
             </HStack>
             <Input
               type="number"
-              placeholder="Salary"
+              placeholder={t('salary')}
               name="salary"
               onChange={(e) => resisterchange(e)}
             />
@@ -157,15 +165,15 @@ const Login = () => {
               <Input
                 type={show ? "text" : "password"}
                 name="password"
-                placeholder="Enter Password"
+                placeholder={t("enter_password")}
                 onChange={(e) => resisterchange(e)}
               />{" "}
               <InputRightElement width="4.5rem">
-                <Button onClick={handleClick}>{show ? "Hide" : "Show"}</Button>
+                <Button onClick={handleClick}>{show ? t("hide") : t("show")}</Button>
               </InputRightElement>
             </InputGroup>
             <Button type="submit" onClick={resisterSubmit}>
-              submit
+              {t('submit')}
             </Button>
           </FormControl>
         )}
@@ -175,7 +183,7 @@ const Login = () => {
           }}
           onClick={() => setPgType(!PgType)}
         >
-          {PgType ? "Don't have an account/signup" : "Already resistered"}
+          {PgType ? t("Don't have an account/signup") : t("already_resistered")}
         </Text>
       </VStack>
     </Box>

@@ -11,8 +11,11 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutuser } from "../store/auth/actions";
-
+import { useTranslation } from 'react-i18next';
 const Navbar = () => {
+
+  const {t } = useTranslation()
+
   const dispatch = useDispatch();
     const { isAuth, user } = useSelector((store) => store.auth.data);
   // console.log(user, isAuth);
@@ -42,14 +45,14 @@ const Navbar = () => {
       alignItems={"center"}
       padding={"0 0.2rem"}
     >
-      <Text onClick={() => navigate("/")}>MP</Text>
+      <Text onClick={() => navigate("/")}>{t('MP')}</Text>
       <Menu>
-        <MenuButton as={Button}>Hello, {username}</MenuButton>
+        <MenuButton as={Button}>{t('Hello')},  {" "+username}</MenuButton>
         <MenuList>
-          <MenuItem onClick={() => navigate("/dashboard")}>My Account</MenuItem>
-          <MenuItem onClick={() => navigate("/dashboard")}>Dashboard</MenuItem>
+          {/* <MenuItem onClick={() => navigate("/dashboard")}>My Account</MenuItem> */}
+          <MenuItem onClick={() => navigate("/dashboard")}> {t('dashboard')}  </MenuItem>
           <MenuItem onClick={loginroutebtn}>
-            {isAuth ? "logout" : "login"}
+            {isAuth ? t("logout") : t('login')}
           </MenuItem>
         </MenuList>
       </Menu>
