@@ -184,3 +184,32 @@ The `Allroutes.jsx` component is responsible for routing in the application. Bel
    - **Route 3**: For the `/Dashboard` path, renders the `Dashboard` component wrapped inside the `RequiredAuth` higher-order component.
 5. **RequiredAuth Component**: Checks for authentication before rendering the `Dashboard` component.
 
+
+
+
+
+```mermaid
+graph TD;
+    A[App Initialization] --> B[Define Routes]
+    B --> C[Home Route]
+    C -->|"Path: /"| D[Home Component]
+
+    B --> E[Login Route]
+    E -->|"Path: /login"| F[Login Component]
+
+    B --> G[Dashboard Route]
+    G -->|"Path: /Dashboard"| H[RequiredAuth HOC]
+    H --> I{Is User Authenticated?}
+    I -->|"Yes"| J[Dashboard Component]
+    I -->|"No"| K[Redirect to Login]
+
+    style A fill:#f9f,stroke:#333,stroke-width:4px;
+    style B fill:#bbf,stroke:#333,stroke-width:4px;
+    style C fill:#bfb,stroke:#333,stroke-width:4px;
+    style E fill:#bfb,stroke:#333,stroke-width:4px;
+    style G fill:#bfb,stroke:#333,stroke-width:4px;
+    style H fill:#ffb,stroke:#333,stroke-width:4px;
+    style I fill:#fbf,stroke:#333,stroke-width:4px;
+    style J fill:#fbb,stroke:#333,stroke-width:4px;
+    style K fill:#bff,stroke:#333,stroke-width:4px;
+```
