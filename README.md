@@ -168,7 +168,7 @@ The `Allroutes.jsx` component is responsible for routing in the application. Bel
 ┌────────────────────┐   ┌────────────────────┐      │     Authentication    │
 │      Home.jsx      │   │      Login.jsx     │      │       Logic in        │
 │  (Home Component)  │   │  (Login Component) │      │   RequiredAuth.jsx    │
-└────────────────────┘   └────────────────────┘      │  (Higher-Order Component)  │
+└────────────────────┘   └────────────────────┘      │(Higher-Order Component)  
                                                      └───────────────────────┘
 ```
 
