@@ -131,3 +131,56 @@ These SVG files are usually small graphics that are utilized within the applicat
 
 ### Summary
 The `Allroutes.jsx` file defines a set of routes for a React application using `react-router-dom`. It imports necessary components and libraries, sets up routing with `Routes` and `Route`, and includes a higher-order component (`RequiredAuth`) to protect certain routes. The layout is styled using a `Box` component from Chakra UI with a margin at the top.
+
+
+# Flowchart of `Allroutes.jsx`
+
+The `Allroutes.jsx` component is responsible for routing in the application. Below is a detailed flowchart of how it works:
+
+```
+                                 ┌───────────────────┐
+                                 │   Allroutes.jsx   │
+                                 └────────┬──────────┘
+                                          │
+                                          ▼
+                             ┌────────────────────────┐
+                             │ <Box marginTop="60px"> │
+                             └────────┬───────────────┘
+                                      │
+                                      ▼
+                            ┌──────────────────────────┐
+                            │        <Routes>          │
+                            └─────────┬────────────────┘
+                                      │
+             ┌────────────────────────┼────────────────────────┐
+             │                        │                        │
+             ▼                        ▼                        ▼
+ ┌────────────────────┐    ┌────────────────────┐    ┌───────────────────────┐
+ │  <Route path="/"   │    │ <Route path="/login│    │ <Route path="/Dashboard│
+ │   element={<Home   │    │  element={<Login   │    │ element={             │
+ │   />} />           │    │  />} />            │    │   <RequiredAuth>      │
+ └────────┬───────────┘    └────────┬───────────┘    │     <Dashboard />     │
+          │                         │                │   </RequiredAuth>     │
+          │                         │                └──────────┬────────────┘
+          │                         │                           │
+          │                         │                           ▼
+          ▼                         ▼                ┌───────────────────────┐
+┌────────────────────┐   ┌────────────────────┐      │     Authentication    │
+│      Home.jsx      │   │      Login.jsx     │      │       Logic in        │
+│  (Home Component)  │   │  (Login Component) │      │   RequiredAuth.jsx    │
+└────────────────────┘   └────────────────────┘      │  (Higher-Order Component)  │
+                                                     └───────────────────────┘
+```
+
+
+### Description
+
+1. **Allroutes.jsx Component**: This is the main routing component.
+2. **Box Component**: A layout component from Chakra UI with a top margin of 60px.
+3. **Routes Component**: Contains all the route definitions.
+4. **Route Definitions**:
+   - **Route 1**: For the root path (`/`), renders the `Home` component.
+   - **Route 2**: For the `/login` path, renders the `Login` component.
+   - **Route 3**: For the `/Dashboard` path, renders the `Dashboard` component wrapped inside the `RequiredAuth` higher-order component.
+5. **RequiredAuth Component**: Checks for authentication before rendering the `Dashboard` component.
+
