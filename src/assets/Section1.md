@@ -1,4 +1,7 @@
 ## React and React Router
+
+![image](https://github.com/user-attachments/assets/b6a8b773-9196-4445-b8e9-30b909c7a773)
+
  React component that uses React Router for routing. Routing in web applications allows for navigation between different pages or views.
 
 #### Imports
