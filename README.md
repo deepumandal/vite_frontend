@@ -142,3 +142,28 @@ _4_3_18 --> A4_4_3_18_1[ToolTip.tsx]:::file
     classDef file fill:#cfc,stroke:#333,stroke-width:2px;
 ```
 
+
+
+
+```mermaid
+%%{ init : { "theme" : "default", "themeVariables": { "edgeColor": "#000000", "edgeWidth": "2", "nodeBorderRadius": "5px", "nodeBorderColor": "#000000", "nodeBorderWidth": "2", "nodeTextColor": "#000000", "nodeBackgroundColor": "#ffffff", "nodeFontSize": "14px", "edgeColor": "#007bff", "edgeFontSize": "12px" } } }%%
+graph TD
+    A[Project Root]:::root
+
+    A1[.github]:::folder
+    A2[public]:::folder
+    A3[src]:::folder
+    A4[README.md]:::file
+    A5[package.json]:::file
+
+    A --> A1
+    A --> A2
+    A --> A3
+    A --> A4
+    A --> A5
+
+    classDef root fill:#f9f,stroke:#333,stroke-width:2px;
+    classDef folder fill:#ccf,stroke:#333,stroke-width:2px;
+    classDef file fill:#cfc,stroke:#333,stroke-width:2px;
+```
+
